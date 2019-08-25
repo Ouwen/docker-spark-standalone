@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 services:
   master:
     image: p7hb/docker-spark:latest
@@ -10,6 +10,8 @@ services:
     volumes:
       - spark_storage:/root/data
     command: ["/usr/local/spark/bin/spark-class", "org.apache.spark.deploy.master.Master", "--host", "master"]
+
+
   
   worker:
     image: p7hb/docker-spark:latest
