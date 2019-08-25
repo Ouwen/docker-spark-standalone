@@ -13,9 +13,10 @@ ARG SBT_BINARY_ARCHIVE_NAME=sbt-$SBT_VERSION
 ARG SBT_BINARY_DOWNLOAD_URL=https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/${SBT_BINARY_ARCHIVE_NAME}.tgz
 
 # Spark related variables.
-ARG SPARK_VERSION=2.2.0
+ARG SPARK_VERSION=2.4.3
 ARG SPARK_BINARY_ARCHIVE_NAME=spark-${SPARK_VERSION}-bin-hadoop2.7
-ARG SPARK_BINARY_DOWNLOAD_URL=http://d3kbcqa49mib13.cloudfront.net/${SPARK_BINARY_ARCHIVE_NAME}.tgz
+ARG SPARK_BINARY_DOWNLOAD_URL=https://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
+
 
 # Configure env variables for Scala, SBT and Spark.
 # Also configure PATH env variable to include binary folders of Java, Scala, SBT and Spark.
@@ -35,10 +36,8 @@ RUN apt-get -yqq update && \
     wget -qO - ${SPARK_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/ && \
     cd /usr/local/ && \
     ln -s ${SCALA_BINARY_ARCHIVE_NAME} scala && \
-    ln -s ${SPARK_BINARY_ARCHIVE_NAME} spark && \
-    cp spark/conf/log4j.properties.template spark/conf/log4j.properties && \
-    sed -i -e s/WARN/ERROR/g spark/conf/log4j.properties && \
-    sed -i -e s/INFO/ERROR/g spark/conf/log4j.properties
+    ln -s spark-${SPARK_VERSION}-bin-hadoop2.7 spark 
+
 
 # We will be running our Spark jobs as `root` user.
 USER root
